@@ -24,6 +24,7 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.kill()
 
+
 # Defining a Player Sprite
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -61,7 +62,16 @@ class Game(object):
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.player = Player()
-        self.enemy = Enemy()
+        # - Hold enemies in Sprite Groups
+        # - All sprites group used for rendering
+
+        self.enemy = pygame.sprite.Group()
+        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites.add(self.player)
+        #defining new user event for the game - enemy generation
+        self.game_event = pygame.USEREVENT + 1
+        # setting the timer after which this event triggers
+        pygame.time.set_timer(self.game_event, 250)
 
     def create_window(self):
         """Create a sample window where the game will run."""
@@ -80,11 +90,18 @@ class Game(object):
                         running = False
                 elif event.type == QUIT:
                     running = False
+                elif event.type == self.game_event:
+                    new_enemy = Enemy()
+                    self.enemy.add(new_enemy)
+                    self.all_sprites.add(new_enemy)
+
             pressed_keys = pygame.key.get_pressed()
             self.player.update(pressed_keys)
+            self.enemy.update()
             self.screen.fill([0, 0, 0])
             # Draw one surface on top of another
-            self.screen.blit(self.player.surface, self.player.rect)
+            for sprite in self.all_sprites:
+                self.screen.blit(sprite.surface, sprite.rect)
             pygame.display.flip()
 
         pygame.quit()
