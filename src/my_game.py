@@ -95,6 +95,7 @@ class Game(object):
         self.screen_height = screen_height
         self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
         self.player = Player()
+        self.clock = pygame.time.Clock()
         # - Hold enemies, clouds in Sprite Groups
         # - All sprites group used for rendering
 
@@ -149,7 +150,8 @@ class Game(object):
                 self.player.kill()
                 running = False
             pygame.display.flip()
-
+            # to ensure the game maintains a frame rate of 30
+            self.clock.tick(30)
         pygame.quit()
 
     @staticmethod
