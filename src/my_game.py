@@ -11,8 +11,25 @@ from pygame.locals import (
     QUIT,
 )
 
-SCREEN_WIDTH = 1500
+SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 500
+
+class Cloud(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Cloud, self).__init__()
+        self.surface = pygame.image.load('assets/cloud.png').convert()
+        self.surface.set_colorkey((0, 0, 0), RLEACCEL)
+        self.rect = self.surface.get_rect(
+            center=(
+                random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
+                random.randint(0, SCREEN_HEIGHT),
+            )
+        )
+
+    def update(self):
+        self.rect.move_ip(-5, 0)
+        if self.rect.left < 0:
+            self.kill()
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -78,16 +95,20 @@ class Game(object):
         self.screen_height = screen_height
         self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
         self.player = Player()
-        # - Hold enemies in Sprite Groups
+        # - Hold enemies, clouds in Sprite Groups
         # - All sprites group used for rendering
 
         self.enemy = pygame.sprite.Group()
+        self.cloud = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
         #defining new user event for the game - enemy generation
         self.game_event = pygame.USEREVENT + 1
         # setting the timer after which this event triggers
         pygame.time.set_timer(self.game_event, 250)
+        # event for cloud creation
+        self.cloud_event = pygame.USEREVENT + 2
+        pygame.time.set_timer(self.cloud_event, 1000)
         pygame.init()
 
     def create_window(self):
@@ -109,11 +130,16 @@ class Game(object):
                     new_enemy = Enemy()
                     self.enemy.add(new_enemy)
                     self.all_sprites.add(new_enemy)
+                elif event.type == self.cloud_event:
+                    new_cloud = Cloud()
+                    self.cloud.add(new_cloud)
+                    self.all_sprites.add(new_cloud)
 
             pressed_keys = pygame.key.get_pressed()
             self.player.update(pressed_keys)
             self.enemy.update()
-            self.screen.fill([0, 0, 0])
+            self.cloud.update()
+            self.screen.fill([135, 206, 250])
             # Draw one surface on top of another
             for sprite in self.all_sprites:
                 self.screen.blit(sprite.surface, sprite.rect)
