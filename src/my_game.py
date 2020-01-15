@@ -1,16 +1,30 @@
 import random
 import pygame
-from pygame.locals import (K_UP, K_DOWN, K_LEFT, K_RIGHT, K_ESCAPE, KEYDOWN, QUIT,)
+from pygame.locals import (
+    RLEACCEL,
+    K_UP,
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT,
+)
 
-SCREEN_WIDTH = 500
+SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 500
 
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
-        self.surface = pygame.Surface((20, 20))
-        self.surface.fill((0, 255, 255))
+        # .convert() - helps pygame render more quickly on non-accelerated
+        # displays
+        self.surface = pygame.image.load("assets/missile.png").convert()
+        # The color of the background image which pygame will
+        # render as transparent since that is the background
+        # color of the image/missile
+        self.surface.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surface.get_rect(
             center=(
                 random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
@@ -29,9 +43,10 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
-        self.surface = pygame.Surface((75, 75))
-        # give the player/sprite a color
-        self.surface.fill((255, 255, 255))
+        self.surface = pygame.image.load("assets/jet.png").convert()
+        self.surface.set_colorkey((255, 255, 255), RLEACCEL)
+        # load image for player
+
         # use this to draw a player later
         self.rect = self.surface.get_rect()
 
@@ -61,6 +76,7 @@ class Game(object):
         self.screen = screen
         self.screen_width = screen_width
         self.screen_height = screen_height
+        self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
         self.player = Player()
         # - Hold enemies in Sprite Groups
         # - All sprites group used for rendering
@@ -72,11 +88,10 @@ class Game(object):
         self.game_event = pygame.USEREVENT + 1
         # setting the timer after which this event triggers
         pygame.time.set_timer(self.game_event, 250)
+        pygame.init()
 
     def create_window(self):
         """Create a sample window where the game will run."""
-        pygame.init()
-        self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
 
     def start_game_loop(self):
         # Run until the user asks to quit
@@ -102,6 +117,11 @@ class Game(object):
             # Draw one surface on top of another
             for sprite in self.all_sprites:
                 self.screen.blit(sprite.surface, sprite.rect)
+
+            # Check for collision
+            if pygame.sprite.spritecollideany(self.player, self.enemy):
+                self.player.kill()
+                running = False
             pygame.display.flip()
 
         pygame.quit()
@@ -114,5 +134,4 @@ class Game(object):
 
 if __name__ == '__main__':
     window = Game('air-force-one', 500, 500)
-    window.create_window()
     window.start_game_loop()
