@@ -14,6 +14,24 @@ from pygame.locals import (
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 500
 
+
+class Score(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Score, self).__init__()
+        self.name = "Score: "
+        self.surface = pygame.Surface((10, 10))
+        # self.surface.fill((0, 255, 255))
+        self.rect = self.surface.get_rect()
+        self.surface.set_colorkey((255, 255, 255), RLEACCEL)
+        self.rect = self.surface.get_rect()
+        self.font = pygame.font.SysFont("Courier", 20)
+        # The color of the background image which pygame will
+        # render as transparent since that is the background
+        # color of the image/missile
+
+
+
+
 class Cloud(pygame.sprite.Sprite):
     def __init__(self):
         super(Cloud, self).__init__()
@@ -94,8 +112,11 @@ class Game(object):
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
+        pygame.init()
         self.player = Player()
         self.clock = pygame.time.Clock()
+        self.score = Score()
+        self.text = self.score.font.render(self.score.name, True, (255, 255, 255))
         # - Hold enemies, clouds in Sprite Groups
         # - All sprites group used for rendering
 
@@ -103,6 +124,7 @@ class Game(object):
         self.cloud = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
+        self.all_sprites.add(self.score)
         #defining new user event for the game - enemy generation
         self.game_event = pygame.USEREVENT + 1
         # setting the timer after which this event triggers
@@ -110,7 +132,10 @@ class Game(object):
         # event for cloud creation
         self.cloud_event = pygame.USEREVENT + 2
         pygame.time.set_timer(self.cloud_event, 1000)
-        pygame.init()
+        self.counter = 0
+
+
+
 
     def create_window(self):
         """Create a sample window where the game will run."""
@@ -135,16 +160,19 @@ class Game(object):
                     new_cloud = Cloud()
                     self.cloud.add(new_cloud)
                     self.all_sprites.add(new_cloud)
+                # self.text_surface.font.render('1234')
 
             pressed_keys = pygame.key.get_pressed()
             self.player.update(pressed_keys)
             self.enemy.update()
             self.cloud.update()
             self.screen.fill([135, 206, 250])
+
             # Draw one surface on top of another
             for sprite in self.all_sprites:
                 self.screen.blit(sprite.surface, sprite.rect)
-
+            score = self.score.font.render("Score: {0}".format(int(self.counter / 10)), True, (0, 0, 0))
+            self.screen.blit(score, (20, 20))
             # Check for collision
             if pygame.sprite.spritecollideany(self.player, self.enemy):
                 self.player.kill()
@@ -152,6 +180,8 @@ class Game(object):
             pygame.display.flip()
             # to ensure the game maintains a frame rate of 30
             self.clock.tick(30)
+            self.counter += 1
+
         pygame.quit()
 
     @staticmethod
