@@ -143,7 +143,7 @@ class Game(object):
     def create_window(self):
         """Create a sample window where the game will run."""
 
-    def start_game_loop(self):
+    def start_loop(self):
         # Run until the user asks to quit
         running = True
         while running:
@@ -194,5 +194,5 @@ class Game(object):
 
 
 if __name__ == '__main__':
-    window = Game(name=NAME, screen_width=SCREEN_WIDTH, screen_height=SCREEN_HEIGHT)
-    window.start_game_loop()
+    game = Game(name=NAME, screen_width=SCREEN_WIDTH, screen_height=SCREEN_HEIGHT)
+    game.start_loop()
