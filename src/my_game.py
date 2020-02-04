@@ -11,8 +11,10 @@ from pygame.locals import (
     QUIT,
 )
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 500
+# Game attributes
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 1000
+NAME = "AIR FORCE ONE"
 
 
 class Score(pygame.sprite.Sprite):
@@ -22,7 +24,7 @@ class Score(pygame.sprite.Sprite):
         self.surface = pygame.Surface((10, 10))
         # self.surface.fill((0, 255, 255))
         self.rect = self.surface.get_rect()
-        self.surface.set_colorkey((255, 255, 255), RLEACCEL)
+        # self.surface.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surface.get_rect()
         self.font = pygame.font.SysFont("Courier", 20)
         # The color of the background image which pygame will
@@ -105,10 +107,11 @@ class Player(pygame.sprite.Sprite):
 
 
 class Game(object):
-    def __init__(self, name=None, screen=None, screen_width=500, screen_height=500):
+    def __init__(self, name=None,
+                 screen_width=500,
+                 screen_height=500):
         """Initialization"""
         self.name = name
-        self.screen = screen
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
@@ -191,5 +194,5 @@ class Game(object):
 
 
 if __name__ == '__main__':
-    window = Game('air-force-one', 500, 500)
+    window = Game(name=NAME, screen_width=SCREEN_WIDTH, screen_height=SCREEN_HEIGHT)
     window.start_game_loop()
