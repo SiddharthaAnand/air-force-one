@@ -38,6 +38,10 @@ class Game(object):
         self.cloud_event = pygame.USEREVENT + 2
         pygame.time.set_timer(self.cloud_event, 1000)
         self.counter = 0
+        self.color_palette = [[135, 206, 250],
+                              [200, 100, 100],
+                              [100, 200, 50],
+                              [100, 100, 200]]
 
     def start_loop(self):
         # Run until the user asks to quit
@@ -56,7 +60,7 @@ class Game(object):
                     self.enemy.add(new_enemy)
                     self.all_sprites.add(new_enemy)
                 elif event.type == self.cloud_event:
-                    new_cloud = Cloud()
+                    new_cloud = Cloud(self.screen_width, self.screen_height)
                     self.cloud.add(new_cloud)
                     self.all_sprites.add(new_cloud)
 
@@ -64,12 +68,13 @@ class Game(object):
             self.player.update(pressed_keys)
             self.enemy.update()
             self.cloud.update()
-            self.screen.fill([135, 206, 250])
-
+            # self.screen.fill([135, 206, 250])
+            self.screen.fill(self.color_palette[int((self.counter / 10) / 50)])
             # Draw one surface on top of another
             for sprite in self.all_sprites:
                 self.screen.blit(sprite.surface, sprite.rect)
             score = self.score.font.render("Score: {0}".format(int(self.counter / 10)), True, (0, 0, 0))
+            # self.screen.fill(self.color_palette[int((self.counter/10) / 50)])
             self.screen.blit(score, (20, 20))
             # Check for collision
             if pygame.sprite.spritecollideany(self.player, self.enemy):
