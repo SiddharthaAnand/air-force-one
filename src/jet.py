@@ -7,6 +7,7 @@ from pygame.locals import (
     K_RIGHT,
 )
 
+
 # Defining a Player Sprite
 class Player(pygame.sprite.Sprite):
     def __init__(self, screen_width=500, screen_height=500):

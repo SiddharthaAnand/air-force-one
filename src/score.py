@@ -1,9 +1,9 @@
 import pygame
 
+
 class Score(pygame.sprite.Sprite):
     def __init__(self):
         super(Score, self).__init__()
-        self.name = "Score: "
         self.surface = pygame.Surface((10, 10))
         # self.surface.fill((0, 255, 255))
         self.rect = self.surface.get_rect()

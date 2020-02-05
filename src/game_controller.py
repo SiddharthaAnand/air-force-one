@@ -1,35 +1,27 @@
-import random
 import pygame
+from score import Score
+from cloud import Cloud
+from missile import Enemy
+from jet import Player
 from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
     QUIT,
 )
-from score import Score
-from cloud import Cloud
-from missile import Enemy
-from jet import Player
-
-# Game attributes
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 1000
-NAME = "AIR FORCE ONE"
 
 
 class Game(object):
     def __init__(self, name=None,
                  screen_width=500,
                  screen_height=500):
-        """Initialization"""
         self.name = name
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
         pygame.init()
-        self.player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.player = Player(self.screen_width, self.screen_height)
         self.clock = pygame.time.Clock()
         self.score = Score()
-        self.text = self.score.font.render(self.score.name, True, (255, 255, 255))
         # - Hold enemies, clouds in Sprite Groups
         # - All sprites group used for rendering
 
@@ -47,12 +39,6 @@ class Game(object):
         pygame.time.set_timer(self.cloud_event, 1000)
         self.counter = 0
 
-
-
-
-    def create_window(self):
-        """Create a sample window where the game will run."""
-
     def start_loop(self):
         # Run until the user asks to quit
         running = True
@@ -66,14 +52,13 @@ class Game(object):
                 elif event.type == QUIT:
                     running = False
                 elif event.type == self.game_event:
-                    new_enemy = Enemy(SCREEN_WIDTH, SCREEN_HEIGHT)
+                    new_enemy = Enemy(self.screen_width, self.screen_height)
                     self.enemy.add(new_enemy)
                     self.all_sprites.add(new_enemy)
                 elif event.type == self.cloud_event:
                     new_cloud = Cloud()
                     self.cloud.add(new_cloud)
                     self.all_sprites.add(new_cloud)
-                # self.text_surface.font.render('1234')
 
             pressed_keys = pygame.key.get_pressed()
             self.player.update(pressed_keys)
@@ -104,5 +89,9 @@ class Game(object):
 
 
 if __name__ == '__main__':
+    # Game attributes
+    SCREEN_WIDTH = 1000
+    SCREEN_HEIGHT = 1000
+    NAME = "AIR FORCE ONE"
     game = Game(name=NAME, screen_width=SCREEN_WIDTH, screen_height=SCREEN_HEIGHT)
     game.start_loop()

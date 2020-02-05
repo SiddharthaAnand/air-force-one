@@ -1,8 +1,8 @@
+import random
 import pygame
 from pygame.locals import (
     RLEACCEL
 )
-import random
 
 
 class Cloud(pygame.sprite.Sprite):
