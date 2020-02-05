@@ -9,7 +9,7 @@ class Score(pygame.sprite.Sprite):
         self.rect = self.surface.get_rect()
         # self.surface.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surface.get_rect()
-        self.font = pygame.font.SysFont("Courier", 20)
+        self.font = pygame.font.SysFont("Courier", 30)
         # The color of the background image which pygame will
         # render as transparent since that is the background
         # color of the image/missile
