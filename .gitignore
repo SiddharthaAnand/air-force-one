@@ -2,3 +2,5 @@
 venv/
 #ignore pycharm files
 .idea/
+# ignore pyc files
+*.pyc

@@ -1,109 +1,19 @@
 import random
 import pygame
 from pygame.locals import (
-    RLEACCEL,
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
     K_ESCAPE,
     KEYDOWN,
     QUIT,
 )
+from score import Score
+from cloud import Cloud
+from missile import Enemy
+from jet import Player
 
 # Game attributes
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 1000
 NAME = "AIR FORCE ONE"
-
-
-class Score(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Score, self).__init__()
-        self.name = "Score: "
-        self.surface = pygame.Surface((10, 10))
-        # self.surface.fill((0, 255, 255))
-        self.rect = self.surface.get_rect()
-        # self.surface.set_colorkey((255, 255, 255), RLEACCEL)
-        self.rect = self.surface.get_rect()
-        self.font = pygame.font.SysFont("Courier", 20)
-        # The color of the background image which pygame will
-        # render as transparent since that is the background
-        # color of the image/missile
-
-
-
-
-class Cloud(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Cloud, self).__init__()
-        self.surface = pygame.image.load('assets/cloud.png').convert()
-        self.surface.set_colorkey((0, 0, 0), RLEACCEL)
-        self.rect = self.surface.get_rect(
-            center=(
-                random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
-                random.randint(0, SCREEN_HEIGHT),
-            )
-        )
-
-    def update(self):
-        self.rect.move_ip(-5, 0)
-        if self.rect.left < 0:
-            self.kill()
-
-
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Enemy, self).__init__()
-        # .convert() - helps pygame render more quickly on non-accelerated
-        # displays
-        self.surface = pygame.image.load("assets/missile.png").convert()
-        # The color of the background image which pygame will
-        # render as transparent since that is the background
-        # color of the image/missile
-        self.surface.set_colorkey((255, 255, 255), RLEACCEL)
-        self.rect = self.surface.get_rect(
-            center=(
-                random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
-                random.randint(0, SCREEN_HEIGHT)
-            )
-        )
-        self.speed = random.randint(5, 20)
-
-    def update(self):
-        self.rect.move_ip(-self.speed, 0)
-        if self.rect.right < 0:
-            self.kill()
-
-
-# Defining a Player Sprite
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Player, self).__init__()
-        self.surface = pygame.image.load("assets/jet.png").convert()
-        self.surface.set_colorkey((255, 255, 255), RLEACCEL)
-        # load image for player
-
-        # use this to draw a player later
-        self.rect = self.surface.get_rect()
-
-    def update(self, pressed_keys):
-        if pressed_keys[K_UP]:
-            self.rect.move_ip(0, -5)
-        if pressed_keys[K_DOWN]:
-            self.rect.move_ip(0, 5)
-        if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-5, 0)
-        if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(5, 0)
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.top <= 0:
-            self.rect.top = 0
-        if self.rect.right > SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH
-        if self.rect.bottom > SCREEN_HEIGHT:
-            self.rect.bottom = SCREEN_HEIGHT
 
 
 class Game(object):
@@ -116,7 +26,7 @@ class Game(object):
         self.screen_height = screen_height
         self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
         pygame.init()
-        self.player = Player()
+        self.player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.clock = pygame.time.Clock()
         self.score = Score()
         self.text = self.score.font.render(self.score.name, True, (255, 255, 255))
@@ -156,7 +66,7 @@ class Game(object):
                 elif event.type == QUIT:
                     running = False
                 elif event.type == self.game_event:
-                    new_enemy = Enemy()
+                    new_enemy = Enemy(SCREEN_WIDTH, SCREEN_HEIGHT)
                     self.enemy.add(new_enemy)
                     self.all_sprites.add(new_enemy)
                 elif event.type == self.cloud_event:
