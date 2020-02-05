@@ -24,7 +24,6 @@ class Game(object):
         self.score = Score()
         # - Hold enemies, clouds in Sprite Groups
         # - All sprites group used for rendering
-
         self.enemy = pygame.sprite.Group()
         self.cloud = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
@@ -73,8 +72,8 @@ class Game(object):
             # Draw one surface on top of another
             for sprite in self.all_sprites:
                 self.screen.blit(sprite.surface, sprite.rect)
-            score = self.score.font.render("Score: {0}".format(int(self.counter / 10)), True, (0, 0, 0))
-            # self.screen.fill(self.color_palette[int((self.counter/10) / 50)])
+            self.score.increment_value(jump=2)
+            score = self.score.font.render("Score: {0}".format(self.score.get_value()), True, (0, 0, 0))
             self.screen.blit(score, (20, 20))
             # Check for collision
             if pygame.sprite.spritecollideany(self.player, self.enemy):
@@ -87,16 +86,12 @@ class Game(object):
 
         pygame.quit()
 
-    @staticmethod
-    def get_random_color():
-        import random
-        return random.randint(1, 255)
-
 
 if __name__ == '__main__':
-    # Game attributes
     SCREEN_WIDTH = 1000
     SCREEN_HEIGHT = 1000
     NAME = "AIR FORCE ONE"
-    game = Game(name=NAME, screen_width=SCREEN_WIDTH, screen_height=SCREEN_HEIGHT)
+    game = Game(name=NAME,
+                screen_width=SCREEN_WIDTH,
+                screen_height=SCREEN_HEIGHT)
     game.start_loop()
