@@ -68,11 +68,11 @@ class Game(object):
             self.enemy.update()
             self.cloud.update()
             # self.screen.fill([135, 206, 250])
-            self.screen.fill(self.color_palette[int((self.counter / 10) / 50)])
+            self.screen.fill(self.color_palette[int((self.counter / 100) % 4)])
             # Draw one surface on top of another
             for sprite in self.all_sprites:
                 self.screen.blit(sprite.surface, sprite.rect)
-            self.score.increment_value(jump=2)
+            self.score.increment_value(jump=1)
             score = self.score.font.render("Score: {0}".format(self.score.get_value()), True, (0, 0, 0))
             self.screen.blit(score, (20, 20))
             # Check for collision
