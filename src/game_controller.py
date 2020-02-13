@@ -38,8 +38,9 @@ class Game(object):
         pygame.time.set_timer(self.cloud_event, 1000)
         self.counter = 0
         self.color_palette = [[135, 206, 250],
-                              [200, 100, 100],
-                              [100, 200, 50],
+                              [135, 200, 200],
+                              [135, 200, 100],
+                              [125, 200, 100],
                               [100, 100, 200]]
 
     def start_loop(self):
@@ -68,7 +69,7 @@ class Game(object):
             self.enemy.update()
             self.cloud.update()
             # self.screen.fill([135, 206, 250])
-            self.screen.fill(self.color_palette[int((self.counter / 100) % 4)])
+            self.screen.fill(self.color_palette[int((self.counter / 500) % 5)])
             # Draw one surface on top of another
             for sprite in self.all_sprites:
                 self.screen.blit(sprite.surface, sprite.rect)
