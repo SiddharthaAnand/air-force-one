@@ -16,7 +16,7 @@ class Score(pygame.sprite.Sprite):
         # color of the image/missile
 
     def increment_value(self, jump=1):
-        self.value = int(self.value + jump)
+        self.value = self.value + jump
 
     def get_value(self):
         return self.value

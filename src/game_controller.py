@@ -72,8 +72,8 @@ class Game(object):
             # Draw one surface on top of another
             for sprite in self.all_sprites:
                 self.screen.blit(sprite.surface, sprite.rect)
-            self.score.increment_value(jump=1)
-            score = self.score.font.render("Score: {0}".format(self.score.get_value()), True, (0, 0, 0))
+            self.score.increment_value(jump=0.1)
+            score = self.score.font.render("Score: {0}".format(int(self.score.get_value())), True, (0, 0, 0))
             self.screen.blit(score, (20, 20))
             # Check for collision
             if pygame.sprite.spritecollideany(self.player, self.enemy):
