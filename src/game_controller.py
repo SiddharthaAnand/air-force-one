@@ -1,8 +1,9 @@
 import pygame
-from score import Score
+from score import Score, HighScore
 from cloud import Cloud
 from missile import Enemy
 from jet import Player
+import json
 from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
@@ -42,6 +43,7 @@ class Game(object):
                               [135, 200, 100],
                               [125, 200, 100],
                               [100, 100, 200]]
+        self.high_score = HighScore()
 
     def start_loop(self):
         # Run until the user asks to quit
@@ -75,7 +77,10 @@ class Game(object):
                 self.screen.blit(sprite.surface, sprite.rect)
             self.score.increment_value(jump=0.1)
             score = self.score.font.render("Score: {0}".format(int(self.score.get_value())), True, (0, 0, 0))
+            high_score = self.score.font.render("High Score: {0}".format(int(self.high_score.get_value())), True,
+                                                (100, 0, 0))
             self.screen.blit(score, (20, 20))
+            self.screen.blit(high_score, (800, 20))
             # Check for collision
             if pygame.sprite.spritecollideany(self.player, self.enemy):
                 self.player.kill()
@@ -85,6 +90,8 @@ class Game(object):
             self.clock.tick(30)
             self.counter += 1
 
+        # Store the score if high score made
+        self.high_score.write(self.score.get_value())
         pygame.quit()
 
 
