@@ -5,4 +5,4 @@ venv/
 # ignore pyc files
 *.pyc
 # ignore high score file
-high_score
+*high_score
