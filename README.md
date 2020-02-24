@@ -24,6 +24,14 @@ Switch to the repository.
 ```python
 $ cd air-force-one
 ```
+Make sure you have activated your virtual environment so that this
+does not mess with your existing environments.
+
+Install the requirements.
+
+```python
+pip install -r requirements.txt
+```
 Now, run.
 ```python
 $ python src/game_controller.py
@@ -31,11 +39,21 @@ $ python src/game_controller.py
 
 Start your mission!
 
-# Description
-
 # Concepts
+Surface
+Window
+Event Loop
+Key Events
+Sprites
 
 # Architecture
+The source code is divided into entities denoted by various components.
+There is a single Game Controller that handles the startup, continuance
+and exit of the game. Specifically, the event loop is present in 
+game_controller.py module. 
+
+Missiles, Jet and Clouds are an extension of Sprites. Anything that 
+you want to interact with in a game can be called a Sprite. 
 
 # Newer additions
 1. Score board for your current score
