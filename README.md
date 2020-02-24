@@ -1,5 +1,5 @@
 ## AIR FORCE ONE
-A 2-D game built using pygame. 
+A 2-D game built using pygame.
 
 # Back story
 You were the captain of a mission which was supposed to carry out 
