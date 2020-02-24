@@ -3,7 +3,6 @@ from score import Score, HighScore
 from cloud import Cloud
 from missile import Enemy
 from jet import Player
-import json
 from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
@@ -70,7 +69,6 @@ class Game(object):
             self.player.update(pressed_keys)
             self.enemy.update()
             self.cloud.update()
-            # self.screen.fill([135, 206, 250])
             self.screen.fill(self.color_palette[int((self.counter / 500) % 5)])
             # Draw one surface on top of another
             for sprite in self.all_sprites:
