@@ -55,6 +55,15 @@ game_controller.py module.
 Missiles, Jet and Clouds are an extension of Sprites. Anything that 
 you want to interact with in a game can be called a Sprite. 
 
+```python
+src/
+```
+This consists of the source code.
+```python
+assets/
+```
+This directory consists of all the images being used in the game.
+
 # Newer additions
 1. Score board for your current score
 2.  High Score to keep track of your earlier better mission capability
